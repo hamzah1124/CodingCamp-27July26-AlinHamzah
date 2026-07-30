@@ -1,0 +1,629 @@
+/* ============================================================
+   1. CSS Custom Properties — Dark Mode Palette
+   ============================================================ */
+:root {
+  /* Colors */
+  --bg-primary:    #0f0f0f;
+  --bg-surface:    #1a1a1a;
+  --bg-elevated:   #242424;
+  --text-primary:  #f0f0f0;
+  --text-secondary:#a0a0a0;
+  --accent:        #6c63ff;
+  --accent-hover:  #7c73ff;
+  --danger:        #e05260;
+  --success:       #4caf7d;
+  --border:        #2e2e2e;
+
+  /* Spacing */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+
+  /* Typography */
+  --font-base:  'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono:  'Courier New', Courier, monospace;
+  --text-sm:    0.875rem;
+  --text-md:    1rem;
+  --text-lg:    1.25rem;
+  --text-xl:    1.75rem;
+  --text-2xl:   2.5rem;
+  --text-huge:  5rem;
+
+  /* Borders & Radius */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+
+  /* Nav width (sidebar) */
+  --nav-width: 220px;
+}
+
+/* ============================================================
+   2. Reset / Base
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-base);
+  font-size: var(--text-md);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  background: none;
+}
+
+input {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================================
+   3. Layout — App Shell (sidebar nav + main content)
+   ============================================================ */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   4. Nav Component
+   ============================================================ */
+.nav {
+  width: var(--nav-width);
+  flex-shrink: 0;
+  background-color: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg) 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.nav-brand {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--accent);
+  padding: 0 var(--space-lg) var(--space-lg);
+  letter-spacing: 0.5px;
+}
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: 0 var(--space-sm);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--text-md);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  text-align: left;
+}
+
+.nav-item:hover {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.nav-item--active {
+  background-color: var(--bg-elevated);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-icon {
+  font-size: 1.1em;
+  width: 1.4em;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-xl);
+  background-color: var(--bg-primary);
+}
+
+/* ============================================================
+   5. Sections — Visibility
+   ============================================================ */
+.section {
+  display: none;
+}
+
+.section--active {
+  display: block;
+}
+
+/* ============================================================
+   6. Section Title (shared)
+   ============================================================ */
+.section-title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  margin-bottom: var(--space-lg);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   7. Greeting Section
+   ============================================================ */
+.greeting-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  gap: var(--space-md);
+}
+
+.greeting-message {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.greeting-time {
+  font-size: var(--text-huge);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.greeting-date {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   8. Focus Timer Section
+   ============================================================ */
+.timer-container {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.timer-display {
+  font-size: var(--text-huge);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl) var(--space-xl);
+  margin: var(--space-xl) 0;
+  letter-spacing: 4px;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   9. To-Do List Section
+   ============================================================ */
+.todo-container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.task-form {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.task-form .text-input {
+  flex: 1;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  transition: border-color 0.15s ease;
+}
+
+.task-item:hover {
+  border-color: var(--accent);
+}
+
+.task-item--completed .task-label {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.task-label {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.task-edit-input {
+  flex: 1;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.task-actions {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   10. Quick Links Section
+   ============================================================ */
+.links-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.links-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-lg);
+}
+
+.link-form {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.link-form--hidden {
+  display: none;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--space-md);
+}
+
+.link-card {
+  position: relative;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg) var(--space-md);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  overflow: hidden;
+}
+
+.link-card:hover {
+  border-color: var(--accent);
+  background-color: var(--bg-elevated);
+}
+
+.link-card__name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  color: var(--text-primary);
+}
+
+.link-card__url {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link-card__delete {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  background-color: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-size: var(--text-sm);
+  line-height: 1;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.link-card__delete:hover {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+/* ============================================================
+   11. Shared UI — Buttons & Inputs
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--text-md);
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn--primary {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.btn--primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn--secondary {
+  background-color: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn--secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn--ghost:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.btn--danger {
+  background-color: transparent;
+  color: var(--danger);
+  border: 1px solid transparent;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-sm);
+}
+
+.btn--danger:hover {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+.btn--icon {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-sm);
+}
+
+.btn--icon:hover {
+  color: var(--text-primary);
+}
+
+.text-input {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  padding: var(--space-sm) var(--space-md);
+  width: 100%;
+  transition: border-color 0.15s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.text-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.text-input--error {
+  border-color: var(--danger);
+}
+
+/* ============================================================
+   12. Utilities & Responsive
+   ============================================================ */
+
+/* Tablet — collapse nav label, show only icons */
+@media (max-width: 768px) {
+  :root {
+    --nav-width: 60px;
+  }
+
+  .nav-brand {
+    display: none;
+  }
+
+  .nav-label {
+    display: none;
+  }
+
+  .nav-item {
+    justify-content: center;
+    padding: var(--space-sm);
+  }
+
+  .nav-icon {
+    width: auto;
+  }
+
+  .main-content {
+    padding: var(--space-lg);
+  }
+
+  .timer-display {
+    font-size: 3.5rem;
+  }
+
+  .greeting-time {
+    font-size: 3.5rem;
+  }
+}
+
+/* Mobile — stack nav on top */
+@media (max-width: 480px) {
+  .app-layout {
+    flex-direction: column;
+  }
+
+  .nav {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .nav-brand {
+    display: none;
+  }
+
+  .nav-list {
+    flex-direction: row;
+    gap: var(--space-xs);
+    padding: 0;
+  }
+
+  .nav-label {
+    display: none;
+  }
+
+  .nav-item {
+    justify-content: center;
+    padding: var(--space-sm);
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .main-content {
+    padding: var(--space-md);
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .greeting-time {
+    font-size: 3rem;
+  }
+
+  .timer-display {
+    font-size: 3rem;
+    padding: var(--space-lg);
+  }
+}
+
+/* Small mobile — extra reduction for very narrow screens */
+@media (max-width: 320px) {
+  .greeting-time {
+    font-size: 2.25rem;
+  }
+
+  .timer-display {
+    font-size: 2.25rem;
+    letter-spacing: 2px;
+  }
+
+  .main-content {
+    padding: var(--space-sm);
+  }
+}
