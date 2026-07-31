@@ -9,6 +9,8 @@
 
 const TASKS_KEY = 'tld_tasks';
 const LINKS_KEY = 'tld_links';
+const NAME_KEY = 'tld_name';
+const TIMER_MINUTES_KEY = 'tld_timer_minutes';
 
 /**
  * Central application state object.
@@ -168,9 +170,25 @@ function updateGreeting() {
   var timeEl = document.getElementById('greeting-time');
   var dateEl = document.getElementById('greeting-date');
 
-  if (msgEl)  msgEl.textContent  = getGreeting(now.getHours());
+  var greetingText = getGreeting(now.getHours());
+  var savedName = '';
+  try { savedName = localStorage.getItem(NAME_KEY) || ''; } catch (e) {}
+  if (savedName) {
+    greetingText = greetingText + ', ' + savedName + '!';
+  }
+
+  if (msgEl)  msgEl.textContent  = greetingText;
   if (timeEl) timeEl.textContent = formatTime(now);
   if (dateEl) dateEl.textContent = formatDate(now);
+}
+
+/** Loads the saved name into the name input field. */
+function loadName() {
+  try {
+    var savedName = localStorage.getItem(NAME_KEY) || '';
+    var nameInput = document.getElementById('name-input');
+    if (nameInput && savedName) nameInput.value = savedName;
+  } catch (e) {}
 }
 
 /* ============================================================
@@ -259,12 +277,14 @@ function stopTimer() {
   AppState.timer.intervalId = null;
 }
 
-/** Resets the timer to 30:00 and stops any active countdown. */
+/** Resets the timer to the saved custom duration (or 30:00) and stops any active countdown. */
 function resetTimer() {
   if (AppState.timer.intervalId !== null) {
     clearInterval(AppState.timer.intervalId);
   }
-  AppState.timer.remaining = 1800;
+  var savedMinutes = 0;
+  try { savedMinutes = parseInt(localStorage.getItem(TIMER_MINUTES_KEY), 10) || 0; } catch (e) {}
+  AppState.timer.remaining = savedMinutes > 0 ? savedMinutes * 60 : 1800;
   AppState.timer.isRunning = false;
   AppState.timer.intervalId = null;
   updateTimerDisplay();
@@ -333,6 +353,22 @@ function renderTasks() {
  */
 function addTask(label) {
   if (label.trim() === '') return;
+
+  var duplicate = AppState.tasks.some(function(t) {
+    return t.label.toLowerCase() === label.trim().toLowerCase();
+  });
+  if (duplicate) {
+    var inp = document.getElementById('task-input');
+    if (inp) {
+      inp.classList.add('text-input--error');
+      inp.title = 'Task already exists';
+      setTimeout(function() {
+        inp.classList.remove('text-input--error');
+        inp.title = '';
+      }, 1500);
+    }
+    return;
+  }
 
   var task = {
     id: generateId(),
@@ -558,10 +594,19 @@ document.addEventListener('DOMContentLoaded', function() {
   showSection('greeting');
 
   // --- Greeting clock ---
+  loadName();
   updateGreeting();
   setInterval(updateGreeting, 1000);
 
   // --- Timer display ---
+  // Load saved timer duration if present
+  var savedTimerMinutes = 0;
+  try { savedTimerMinutes = parseInt(localStorage.getItem(TIMER_MINUTES_KEY), 10) || 0; } catch (e) {}
+  if (savedTimerMinutes > 0) {
+    AppState.timer.remaining = savedTimerMinutes * 60;
+    var timerMinutesInput = document.getElementById('timer-minutes-input');
+    if (timerMinutesInput) timerMinutesInput.value = savedTimerMinutes;
+  }
   resetTimer();
 
   /* ----------------------------------------------------------
@@ -625,6 +670,40 @@ document.addEventListener('DOMContentLoaded', function() {
   if (timerStartBtn) timerStartBtn.addEventListener('click', startTimer);
   if (timerStopBtn)  timerStopBtn.addEventListener('click', stopTimer);
   if (timerResetBtn) timerResetBtn.addEventListener('click', resetTimer);
+
+  /* ----------------------------------------------------------
+     Name save button
+  ---------------------------------------------------------- */
+  var nameSaveBtn = document.getElementById('name-save-btn');
+  if (nameSaveBtn) {
+    nameSaveBtn.addEventListener('click', function() {
+      var nameInput = document.getElementById('name-input');
+      var value = nameInput ? nameInput.value.trim() : '';
+      try { localStorage.setItem(NAME_KEY, value); } catch (e) {}
+      updateGreeting();
+      nameSaveBtn.textContent = 'Saved!';
+      setTimeout(function() { nameSaveBtn.textContent = 'Save Name'; }, 1500);
+    });
+  }
+
+  /* ----------------------------------------------------------
+     Timer set button
+  ---------------------------------------------------------- */
+  var timerSetBtn = document.getElementById('timer-set-btn');
+  if (timerSetBtn) {
+    timerSetBtn.addEventListener('click', function() {
+      var minutesInput = document.getElementById('timer-minutes-input');
+      var minutes = parseInt(minutesInput ? minutesInput.value : '30', 10);
+      if (isNaN(minutes)) minutes = 30;
+      if (minutes < 1)   minutes = 1;
+      if (minutes > 120) minutes = 120;
+      if (minutesInput) minutesInput.value = minutes;
+      stopTimer();
+      AppState.timer.remaining = minutes * 60;
+      try { localStorage.setItem(TIMER_MINUTES_KEY, minutes); } catch (e) {}
+      updateTimerDisplay();
+    });
+  }
 
   /* ----------------------------------------------------------
      Quick Links — show/hide form

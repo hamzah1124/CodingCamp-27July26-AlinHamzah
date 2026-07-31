@@ -77,8 +77,20 @@
       >
         <div class="greeting-container">
           <p id="greeting-message" class="greeting-message">Good Morning</p>
-          <h1 id="greeting-time" class="greeting-time">00:00</h1>
+          <h1 id="greeting-time" class="greeting-time">00:00:00</h1>
           <p id="greeting-date" class="greeting-date">Monday, 28 July 2025</p>
+          <div class="greeting-name-form">
+            <input
+              id="name-input"
+              class="text-input greeting-name-input"
+              type="text"
+              placeholder="Enter your name…"
+              aria-label="Your name"
+              autocomplete="off"
+              maxlength="40"
+            />
+            <button id="name-save-btn" class="btn btn--primary">Save Name</button>
+          </div>
         </div>
       </section>
 
@@ -97,6 +109,19 @@
             <button id="timer-start" class="btn btn--primary">Start</button>
             <button id="timer-stop" class="btn btn--secondary">Stop</button>
             <button id="timer-reset" class="btn btn--ghost">Reset</button>
+          </div>
+          <div class="timer-settings">
+            <label for="timer-minutes-input" class="timer-settings-label">Set minutes:</label>
+            <input
+              id="timer-minutes-input"
+              class="text-input timer-minutes-input"
+              type="number"
+              min="1"
+              max="120"
+              value="30"
+              aria-label="Timer duration in minutes"
+            />
+            <button id="timer-set-btn" class="btn btn--secondary">Set</button>
           </div>
         </div>
       </section>

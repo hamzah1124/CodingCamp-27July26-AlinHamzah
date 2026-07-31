@@ -627,3 +627,40 @@ a {
     padding: var(--space-sm);
   }
 }
+
+/* ============================================================
+   13. Feature Additions
+   ============================================================ */
+
+/* Feature 1 — Custom Name in Greeting */
+.greeting-name-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  align-items: center;
+}
+
+.greeting-name-input {
+  max-width: 220px;
+  width: 100%;
+}
+
+/* Feature 2 — Change Pomodoro Time */
+.timer-settings {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.timer-settings-label {
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+}
+
+.timer-minutes-input {
+  width: 70px;
+  text-align: center;
+}
